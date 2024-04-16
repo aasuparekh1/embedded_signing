@@ -3,9 +3,7 @@ import { authenticationAPI } from "../api";
 async function getAccountInfo() {
     let userInfoResponse;
     try {
-        console.log("in try");
         userInfoResponse = await authenticationAPI.fetchUserInfo();
-        console.log("userInfoResponse",userInfoResponse);
     } catch (e) {
         // handleError({
         //     title: "Problem while completing login.",

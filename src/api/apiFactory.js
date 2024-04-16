@@ -11,7 +11,6 @@ const configureInterceptors = (api) => {
       };
       const accessTokenInfo = getAuthToken();
       config.headers.Authorization = `Bearer ${accessTokenInfo.accessToken}`;
-      console.log("config",config);
       return config;
     },
     (error) => {
@@ -48,7 +47,6 @@ export const createDocumentAPI = (
   const api = createAPI(axios);
 
   const createTemplate = async (description, name, emailSubject) => {
-    console.log("in createTemplate");
     const requestData = {
       description,
       name,
@@ -65,13 +63,10 @@ export const createDocumentAPI = (
         ],
       },
     };
-    debugger;
-    console.log("requestData",requestData);
     const response = await api.post(
       `${accountBaseUrl}${eSignBase}/accounts/${accountId}/templates`,
       requestData
     );
-    console.log("response",response);
     return response.data.templateId;
   };
 
@@ -133,7 +128,6 @@ export const createDocumentAPI = (
       ],
       status: "created",
     };
-    debugger;
     const response = await api.post(
       `${accountBaseUrl}${eSignBase}/accounts/${accountId}/envelopes`,
       requestData
@@ -210,7 +204,6 @@ export const createEmbeddedSigningAPI = (
   accountId
 ) => {
   const api = createAPI(axios);
-  console.log("api",api);
 
   const createEnvelope = async (htmlDoc, signer) => {
     const requestData = {
@@ -244,8 +237,6 @@ export const createEmbeddedSigningAPI = (
     };
 
     console.log(`${accountBaseUrl}${eSignBase}/accounts/${accountId}/envelopes`);
-    console.log("requestData",requestData);
-    debugger
     const response = await api.post(
       `${accountBaseUrl}${eSignBase}/accounts/${accountId}/envelopes`,
       requestData
@@ -272,7 +263,6 @@ export const createEmbeddedSigningAPI = (
 
   const embeddedSigning = async (signer, template) => {
     const envelopeId = await createEnvelope(template, signer);
-    console.log("envelopeId",envelopeId);
     const url = await embeddedSigningCeremony(envelopeId, signer);
 
     const signingWindow = window.open(url, "_blank");
@@ -301,9 +291,7 @@ export const createAuthAPI = (
   clientId,
   returnUrl
 ) => {
-  console.log("in createAuthAPI");
   const api = createAPI(axios);
-  console.log("api",api);
 
   const login = async (nonce, onPopupIsBlocked) => {
     const url =
@@ -324,8 +312,6 @@ export const createAuthAPI = (
     return { window: loginWindow, nonce };
   };
 
-  console.log("serviceProvider",serviceProvider);
-  console.log("userInfoPath",userInfoPath);
   const fetchUserInfo = async () => {
     const response = await api.get(`${serviceProvider}${userInfoPath}`);
     return response.data;

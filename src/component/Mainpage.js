@@ -1,5 +1,5 @@
 
-import { useEffect, useState,useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import $, { event } from 'jquery'; // Import jQuery if not already included in your project
 import {
   CallApi,
@@ -53,7 +53,7 @@ function Mainpage() {
       email: data.userInfo.email,
       clientUserId: 1000
     };
-    console.log("signer", signer);
+    console.log("Mainpage signer", signer);
     const envelopeId = await createEnvelope(signer);
     console.log("envelopeId", envelopeId);
     if (envelopeId) {
@@ -215,28 +215,28 @@ function Mainpage() {
     msg(`Creating envelope.`);
     const apiMethod = `/accounts/${data.userInfo.defaultAccount}/envelopes`;
     const httpMethod = "POST";
-    console.log("req", req);
-    // const results = await data.callApi.callApiJson({
-    //   apiMethod: apiMethod,
-    //   httpMethod: httpMethod,
-    //   req: req
-    // });
-    // console.log("results",results);
+    const results = await data.callApi.callApiJson({
+      apiMethod: apiMethod,
+      httpMethod: httpMethod,
+      req: req
+    });
+
     const accountInfo = accountRepository.getAccountInfo();
+    msg('accountInfo');
+    console.log("AccountInfo",accountInfo);
+    msg(`accountInfo: ${accountInfo.accountBaseUrl}`);
     const api = initEmbeddedSigningAPI(
       accountInfo.accountBaseUrl,
       accountInfo.accountId
     );
-
+    msg('api');
     const signer = {
       email: accountInfo.userEmail,
       name: accountInfo.userName,
       // photo,
     };
-    console.log("this signer", signer);
 
     const template = createEmbeddedSigningTemplate(signer, t);
-    console.log("template",template);
 
     try {
       signingResult.current = await api.embeddedSigning(signer, template, () =>
@@ -248,21 +248,20 @@ function Mainpage() {
       errMsg(e.response?.data?.message ?? e.message);
     }
 
-    // if (results === false) {
-    //   errMsg(data.callApi.errMsg);
-    //   return false;
-    // }
-    // if (logLevel > 0) {
-    //   htmlMsg(
-    //     `<p>Envelope created. Response:</p><p><pre><code>${JSON.stringify(
-    //       results,
-    //       null,
-    //       4
-    //     )}</code></pre></p>`
-    //   );
-    // }
-    // return results.envelopeId;
-    return;
+    if (results === false) {
+      errMsg(data.callApi.errMsg);
+      return false;
+    }
+    if (logLevel > 0) {
+      htmlMsg(
+        `<p>Envelope created. Response:</p><p><pre><code>${JSON.stringify(
+          results,
+          null,
+          4
+        )}</code></pre></p>`
+      );
+    }
+    return results.envelopeId;
   }
 
   /*

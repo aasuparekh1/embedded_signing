@@ -130,7 +130,6 @@ class ImplicitGrant {
             i += 2;
         }
         alert("response.access_token")
-        console.log("access_token", response.access_token);
         const newState = response.state;
         if (newState !== this._nonce) {
             this.errMsg = "Bad state response. Possible attacker!?!";
@@ -150,7 +149,7 @@ class ImplicitGrant {
         };
         accountRepository.setAuthToken(accessTokenInfo);
         const userInfo = await getAccountInfo();
-        console.log("userInfo",userInfo);
+        console.log("docusign userInfo",userInfo);
         // if (userInfo) {
         //     const accountInfo = mapToAccountInfo(userInfo);
         //     handleSuccess(accountInfo);
@@ -282,7 +281,6 @@ class UserInfo {
                 this.defaultAccountIndex = i
             }
         });
-        debugger;
         this.defaultAccount = this.accounts[this.defaultAccountIndex].accountId;
         this.defaultAccountName = this.accounts[this.defaultAccountIndex].accountName;
         this.defaultBaseUrl = this.accounts[this.defaultAccountIndex].accountBaseUrl;
