@@ -221,15 +221,17 @@ function Mainpage() {
       req: req
     });
 
-    const accountInfo = accountRepository.getAccountInfo();
-    msg('accountInfo');
-    console.log("AccountInfo",accountInfo);
-    msg(`accountInfo: ${accountInfo.accountBaseUrl}`);
+    // const accountInfo = accountRepository.getAccountInfo();
+    const accountInfo = { 
+      accountId: '91f961c8-dbd2-4dad-86e2-e109cf6f6f96', 
+      accountBaseUrl: 'https://demo.docusign.net', 
+      userName: 'aashu.ikart', 
+      userEmail: 'aashu.ikart@gmail.com' }
+    msg('AccountInfo');
     const api = initEmbeddedSigningAPI(
       accountInfo.accountBaseUrl,
       accountInfo.accountId
     );
-    msg('api');
     const signer = {
       email: accountInfo.userEmail,
       name: accountInfo.userName,
